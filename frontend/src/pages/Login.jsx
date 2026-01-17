@@ -1,8 +1,58 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import {useNavigate} from "react-router-dom"
+import { authDataContext } from '../context/AuthContext';
+import axios from 'axios';
 
 function Login() {
+
+    const [show, setShow] = useState(false);
+    let { serverUrl } = useContext(authDataContext);
+    const navigate = useNavigate();
+
+    let [email, setEmail] = useState("");
+    let [password, setPassword] = useState("");
+    let [loading, setLoading] = useState(false);
+    let [err, setErr] = useState("");
+
+    const handleSignIn = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            let result = await axios.post(serverUrl + "/api/auth/login" , {
+                email, password
+            }, { withCredentials: true })
+            console.log(result);
+            setErr("")
+            setLoading(false)
+            setEmail("")
+            setPassword("")
+        } catch (error) {
+            setErr(error.response.data.message)
+            setLoading(false)
+        }
+    }
+
     return (
-        <div>Login</div>
+        <div className='w-full h-screen bg-[white] flex flex-col items-center justify-start gap-[10px]'>
+            <div onClick={() => navigate("/")} className='p-[30px] lg:p-[35px] w-full h-[80px] flex items-center'>
+                <img className='h-8' src="data:image/png;base64,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" alt="" />
+            </div>
+
+            <form className='w-[90%] max-w-[400px] h-[600px] md:shadow-xl flex flex-col justify-center gap-[10px] p-[25px]' onSubmit={handleSignIn}>
+                <h1 className='text-gray-800 text-[30px] font-semibold mb-[30px]'>Sign In</h1>
+                <input className='w-[100%] h-[50px] border-2 border-gray-600 text-gray-800 text-[18px] px-[20px] py-[10px] rounded-md' type="email" placeholder='email' required value={email} onChange={(e) => setEmail(e.target.value)} />
+                <div className='w-[100%] h-[50px] border-2 border-gray-600 text-gray-800 text-[18px] rounded-md relative'>
+                    <input className='w-full h-full border-none text-gray-800 text-[18px] px-[20px] py-[10px] rounded-md' type={show ? "text" : "password"} placeholder='password' required value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <span onClick={() => setShow(prev => !prev)} className='absolute right-[20px] top-[10px] text-[#0A66C2] cursor-pointer font-semibold'>{show ? "hide" : "show"}</span>
+                </div>
+                {err && <p className='text-center text-red-500'>
+                        *{err}
+                    </p>
+                }
+                <button className='w-[100%] h-[50px] rounded-full bg-[#0A66C2] text-white mt-[30px]' disabled={loading}>{loading ? "Loading..." : "Sign In" }</button>
+                <p className='text-center'>Doesn't have an account ? <span className='text-[#0A66C2] font-semibold cursor-pointer' onClick={() => navigate("/signup")}>Sign Up</span></p>
+            </form>
+        </div>
     )
 }
 
