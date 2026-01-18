@@ -2,11 +2,13 @@ import React, { useContext, useState } from 'react'
 import {useNavigate} from "react-router-dom"
 import { authDataContext } from '../context/AuthContext';
 import axios from 'axios';
+import { userDataContext } from '../context/UserContext';
 
 function Login() {
 
     const [show, setShow] = useState(false);
     let { serverUrl } = useContext(authDataContext);
+    let { userData, setUserData } = useContext(userDataContext);
     const navigate = useNavigate();
 
     let [email, setEmail] = useState("");
@@ -22,6 +24,8 @@ function Login() {
                 email, password
             }, { withCredentials: true })
             console.log(result);
+            setUserData(result.data)
+            navigate("/")
             setErr("")
             setLoading(false)
             setEmail("")
