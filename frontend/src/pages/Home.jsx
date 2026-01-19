@@ -12,12 +12,12 @@ function Home() {
     let { userData, setUserData, edit, setEdit } = useContext(userDataContext)
 
     return (
-        <div className='w-full h-[100vh] bg-[#F4F2EE] pt-[100px] flex items-start justify-center gap-[20px] px-[20px] flex-col lg:flex-row'>
+        <div className='w-full h-[100vh] bg-[#F4F2EE] lg:pt-[100px] pt-[200px] flex items-start justify-center gap-[20px] px-[20px] flex-col lg:flex-row'>
             { edit && <EditProfile /> }
             <Nav />
 
             {/* left */}
-            <div className='w-full lg:w-[25%] min-h-[200px] bg-white shadolw-lg rounded-lg p-[10px] relative'>
+            <div className='w-full lg:w-[25%] lg:min-h-[200px] min-h-[280px] bg-white shadolw-lg rounded-lg p-[10px] relative'>
                 <div className='w-[100%] h-[100px] bg-gray-300 rounded overflow-hidden flex items-center justify-center cursor-pointer' onClick={() => setEdit(true)}>
                     <img src="" alt="" />
                     <IoCameraOutline className='w-[25px] h-[25px] absolute top-[20px] right-[20px] text-gray-800' />
