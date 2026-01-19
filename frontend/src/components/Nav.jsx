@@ -39,7 +39,7 @@ function Nav() {
                 { !activeSearch && <div>
                     <IoSearchSharp className='w-[23px] h-[23px] text-gray-600 md:hidden' onClick={() => setActiveSearch(true)} />
                 </div> }
-                <form className={`w-[200px] lg:w-[350px] h-[40px] bg-transparent border-1 border-gray-500 flex items-center gap-[10px] px-[10px] py-[5px] rounded-full ${ !activeSearch ? "hidden" : "" }`}>
+                <form className={`w-[200px] lg:w-[350px] h-[40px] bg-transparent border-1 border-gray-500 lg:flex items-center gap-[10px] px-[10px] py-[5px] rounded-full ${ !activeSearch ? "hidden" : "flex" }`}>
                     <div>
                         <IoSearchSharp className='w-[23px] h-[23px] text-gray-600' />
                     </div>
