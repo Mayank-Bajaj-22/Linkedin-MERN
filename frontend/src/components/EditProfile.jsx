@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useRef } from 'react'
 import { RxCross2 } from "react-icons/rx";
 import { userDataContext } from '../context/UserContext';
 import dp from "../assets/dp.png"
@@ -28,6 +28,16 @@ function EditProfile() {
         company: "",
         description: ""
     });
+
+    let [frontendProfileImage, setFrontendProfileImage] = useState(userData.profileImage || dp)
+    let [backendProfileImage, setBackendProfileImage] = useState(null)
+
+    let [frontendCoverImage, setFrontendCoverImage] = useState(userData.coverImage || null)
+    let [backendCoverImage, setBackendCoverImage] = useState(null)
+
+
+    const profileImage = useRef(); // return a object
+    const coverImage = useRef(); // return a object
 
     function addSkill (e) {
         e.preventDefault();
@@ -79,21 +89,37 @@ function EditProfile() {
         }
     }
 
+    function handleProfileImage(e) {
+        let file = e.target.files[0];
+        setBackendProfileImage(file);
+        setFrontendProfileImage(URL.createObjectURL(file))
+    }
+
+    function handleCoverImage(e) {
+        let file = e.target.files[0];
+        setBackendCoverImage(file);
+        setFrontendCoverImage(URL.createObjectURL(file))
+    }
+
     return (
         <div className='w-full h-[100vh] fixed top-0 z-100 flex items-center justify-center'>
+
+            <input type="file" accept="image/*" hidden ref={profileImage} onChange={handleProfileImage} />
+            <input type="file" accept="image/*" hidden ref={coverImage} onChange={handleCoverImage} />
+
             <div className='bg-black opacity-[0.6] w-full h-full absolute'></div>
-            <div className='w-[90%] max-w-[500px] h-[600px] bg-white relative z-200 shadow-lg rounded-lg p-[10px] overflow-auto'>
-                <div className='absolute top-[20px] right-[20px] cursor-pointer' >
+            <div className='w-[90%] mt-15 max-w-[500px] h-[600px] bg-white relative z-200 shadow-lg rounded-lg p-[10px] overflow-auto'>
+                <div className='absolute top-[10px] right-[20px] cursor-pointer' >
                     <RxCross2 onClick={() => setEdit(false)} className='w-[25px] h-[25px] text-gray-800 font-bold cursor-pointer' />
                 </div>
-                <div className='w-full h-[200px] bg-gray-500 rounded-lg overflow-hidden'>
-                    <img className='w-full' src="" alt="" />
-                    <IoCameraOutline className='w-[25px] h-[25px] absolute top-[180px] right-[20px] text-white' />
+                <div className='mt-[27px] w-full h-[200px] bg-gray-500 rounded-lg overflow-hidden' onClick={() => coverImage.current.click()} onChange={handleCoverImage} >
+                    <img className='w-full' src={frontendCoverImage} alt="" />
+                    <IoCameraOutline className='w-[25px] h-[25px] absolute top-[200px] right-[20px] text-white' />
                 </div>
-                <div className='w-[80px] h-[80px] rounded-full absolute top-[172px] left-[30px]'>
-                    <img className='rounded-full' src={dp} alt="" />
+                <div className='w-[80px] h-[80px] rounded-full absolute top-[190px] left-[30px]' onClick={() => profileImage.current.click()}>
+                    <img className='w-full h-full rounded-full' src={frontendProfileImage} alt="" />
                 </div>
-                <div className='w-[20px] h-[20px] absolute top-[220px] left-[90px] bg-[#0A66C2] flex items-center justify-center rounded-full'>
+                <div className='w-[20px] h-[20px] absolute top-[240px] left-[90px] bg-[#0A66C2] flex items-center justify-center rounded-full'>
                     <IoMdAdd onClick={() => setEdit(true)} className='text-white' />
                 </div>
                 <div className='w-full flex flex-col items-center justify-center mt-[55px] gap-[20px]'>
