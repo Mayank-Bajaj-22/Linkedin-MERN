@@ -142,7 +142,7 @@ function EditProfile() {
     }
 
     return (
-        <div className='w-full h-[100vh] fixed top-0 z-100 flex items-center justify-center'>
+        <div className='w-full h-[100vh] fixed top-0 left-0 z-100 flex items-center justify-center'>
 
             <input type="file" accept="image/*" hidden ref={profileImage} onChange={handleProfileImage} />
             <input type="file" accept="image/*" hidden ref={coverImage} onChange={handleCoverImage} />
