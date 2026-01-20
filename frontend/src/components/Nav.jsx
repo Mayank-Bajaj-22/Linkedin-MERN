@@ -30,7 +30,7 @@ function Nav() {
     }
 
     return (
-        <div className='w-full h-[70px] bg-[#ffffff] fixed top-0 shadow-lg flex items-center md:justify-around justify-between px-[10px] left-0 z-999'>
+        <div className='w-full h-[70px] bg-[#ffffff] fixed top-0 shadow-lg flex items-center md:justify-around justify-between px-[10px] left-0 z-99'>
             {/* left */}
             <div className='flex justify-center items-center gap-[10px]'>
                 <div onClick={() => {setActiveSearch(false)}}>
@@ -52,9 +52,9 @@ function Nav() {
             <div className='flex items-center justify-center gap-[20px] relative'>
 
                 {/* pop-up */}
-                { show && <div className='absolute w-[300px] min-h-[300px] bg-white shadow-lg top-15 lg:left-0 -left-55 flex flex-col items-center p-[15px] gap-[15px] rounded-lg'>
+                { show && <div className='absolute w-[300px] min-h-[300px] bg-white shadow-lg top-17 lg:left-0 -left-55 flex flex-col items-center p-[15px] gap-[15px] rounded-lg'>
                     <div className='w-[70px] h-[70px] rounded-full'>
-                        <img className='rounded-full' src={dp} alt="" />
+                        <img className='rounded-full' src={ userData.profileImage || dp } alt="" />
                     </div>
                     <div className='text-[19px] font-semibold text-gray-700'>
                         {` ${userData.firstName} ${userData.lastName}`}
@@ -89,7 +89,7 @@ function Nav() {
                     </div>
                 </div>
                 <div className='w-[40px] h-[40px] rounded-full cursor-pointer' onClick={(prev) => setShow(prev => !prev)}>
-                    <img className='rounded-full' src={dp} alt="" />
+                    <img className='rounded-full' src={userData.profileImage || dp} alt="" />
                 </div>
             </div>
         </div>

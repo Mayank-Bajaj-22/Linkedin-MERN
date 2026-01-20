@@ -4,10 +4,13 @@ import { userDataContext } from '../context/UserContext';
 import dp from "../assets/dp.png"
 import { IoCameraOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
+import axios from 'axios';
+import { authDataContext } from '../context/AuthContext';
 
 function EditProfile() {
 
     let { edit, setEdit, userData, setUserData } = useContext(userDataContext);
+    let { serverUrl } = useContext(authDataContext)
     let [firstName, setFirstName] = useState(userData.firstName || "");
     let [lastName, setLastName] = useState(userData.lastName || "");
     let [userName, setUserName] = useState(userData.userName || "");
@@ -34,6 +37,8 @@ function EditProfile() {
 
     let [frontendCoverImage, setFrontendCoverImage] = useState(userData.coverImage || null)
     let [backendCoverImage, setBackendCoverImage] = useState(null)
+
+    let [saving, setSaving] = useState(false)
 
 
     const profileImage = useRef(); // return a object
@@ -101,6 +106,41 @@ function EditProfile() {
         setFrontendCoverImage(URL.createObjectURL(file))
     }
 
+    const handleSaveProfile = async () => {
+        setSaving(true)
+        try {
+            let formdata = new FormData();
+            
+            formdata.append("firstName", firstName);
+            formdata.append("lastName", lastName);
+            formdata.append("userName", userName);
+            formdata.append("headline", headline);
+            formdata.append("location", location);
+            formdata.append("gender", gender);
+            formdata.append("skills", JSON.stringify(skills));
+            formdata.append("education", JSON.stringify(education));
+            formdata.append("experience", JSON.stringify(experience));
+
+            if (backendProfileImage) {
+                formdata.append("profileImage", backendProfileImage)
+            }
+
+            if (backendCoverImage) {
+                formdata.append("coverImage", backendCoverImage)
+            }
+
+            let result = await axios.put(serverUrl + "/api/user/updateprofile", formdata, { withCredentials: true });
+            console.log(result)
+            setUserData(result.data)
+            setSaving(false)
+            setEdit(false);
+
+        } catch (error) {
+            console.log(error)
+            setSaving(false)
+        }
+    }
+
     return (
         <div className='w-full h-[100vh] fixed top-0 z-100 flex items-center justify-center'>
 
@@ -108,11 +148,11 @@ function EditProfile() {
             <input type="file" accept="image/*" hidden ref={coverImage} onChange={handleCoverImage} />
 
             <div className='bg-black opacity-[0.6] w-full h-full absolute'></div>
-            <div className='w-[90%] mt-15 max-w-[500px] h-[600px] bg-white relative z-200 shadow-lg rounded-lg p-[10px] overflow-auto'>
+            <div className='w-[90%] mt-15 max-w-[500px] h-[600px] bg-white relative z-200 shadow-lg rounded-lg p-[10px] overflow-auto scrollbar'>
                 <div className='absolute top-[10px] right-[20px] cursor-pointer' >
                     <RxCross2 onClick={() => setEdit(false)} className='w-[25px] h-[25px] text-gray-800 font-bold cursor-pointer' />
                 </div>
-                <div className='mt-[27px] w-full h-[200px] bg-gray-500 rounded-lg overflow-hidden' onClick={() => coverImage.current.click()} onChange={handleCoverImage} >
+                <div className='mt-[27px] w-full h-[200px] bg-gray-500 rounded-lg overflow-hidden' onClick={() => coverImage.current.click()} >
                     <img className='w-full' src={frontendCoverImage} alt="" />
                     <IoCameraOutline className='w-[25px] h-[25px] absolute top-[200px] right-[20px] text-white' />
                 </div>
@@ -198,8 +238,8 @@ function EditProfile() {
                             </button>
                         </div>
                     </div>
-                    <button className='w-[100%] h-[50px] rounded-full bg-[#0A66C2] mt-[20px] text-[white] font-semibold text-[18px]'>
-                        Save Profile
+                    <button className='w-[100%] h-[50px] rounded-full bg-[#0A66C2] mt-[20px] text-[white] font-semibold text-[18px]' onClick={handleSaveProfile} disabled={saving} >
+                        { saving ? "saving..." : "Save Profile" }
                     </button>
                 </div>
             </div>
