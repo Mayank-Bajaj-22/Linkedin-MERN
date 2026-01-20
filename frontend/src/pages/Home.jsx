@@ -29,13 +29,13 @@ function Home() {
                     <IoMdAdd onClick={() => setEdit(true)} className='text-white' />
                 </div>
                 <div className='mt-[32px] pl-[15px]'>
-                    <div className='text-[19px] font-semibold text-gray-700'>
+                    <div className='text-[22px] font-semibold text-gray-700'>
                         {`${userData.firstName} ${userData.lastName}`}
                     </div>
-                    <div className='text-[16px] text-gray-700'>
+                    <div className='text-[16px] text-gray-600'>
                         {userData.headline || ""}
                     </div>
-                    <div className='text-[16px] text-gray-700'>
+                    <div className='text-[16px] text-gray-600'>
                         {userData.location}
                     </div>
                 </div>
