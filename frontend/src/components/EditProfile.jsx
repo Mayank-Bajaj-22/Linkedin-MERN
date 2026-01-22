@@ -152,8 +152,8 @@ function EditProfile() {
                 <div className='absolute top-[10px] right-[20px] cursor-pointer' >
                     <RxCross2 onClick={() => setEdit(false)} className='w-[25px] h-[25px] text-gray-800 font-bold cursor-pointer' />
                 </div>
-                <div className='mt-[27px] w-full h-[200px] bg-gray-500 rounded-lg overflow-hidden' onClick={() => coverImage.current.click()} >
-                    <img className='w-full' src={frontendCoverImage} alt="" />
+                <div className='mt-[27px] w-full flex h-[200px] bg-gray-500 rounded-lg overflow-hidden' onClick={() => coverImage.current.click()} >
+                    <img className='w-full object-cover' src={frontendCoverImage} alt="" />
                     <IoCameraOutline className='w-[25px] h-[25px] absolute top-[200px] right-[20px] text-white' />
                 </div>
                 <div className='w-[80px] h-[80px] rounded-full absolute top-[190px] left-[30px]' onClick={() => profileImage.current.click()}>

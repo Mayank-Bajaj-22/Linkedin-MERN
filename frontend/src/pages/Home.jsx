@@ -56,18 +56,18 @@ function Home() {
     }
 
     return (
-        <div className='w-full min-h-[100vh] bg-[#F4F2EE] lg:pt-[100px] pt-[220px] flex items-center lg:items-start justify-center gap-[20px] px-[20px] flex-col lg:flex-row relative pb-[20px]'>
+        <div className='w-full min-h-[100vh] bg-[#F4F2EE] lg:pt-[100px] pt-[90px] flex items-center lg:items-start justify-center gap-[20px] px-[20px] flex-col lg:flex-row relative pb-[20px]'>
             { edit && <EditProfile /> }
             <Nav />
 
             {/* left */}
             <div className='w-full lg:w-[25%] lg:min-h-[200px] min-h-[280px] bg-white shadolw-lg rounded-lg p-[10px] relative'>
                 <div className='w-[100%] h-[100px] bg-gray-300 rounded overflow-hidden flex items-center justify-center cursor-pointer' onClick={() => setEdit(true)}>
-                    <img src={userData.coverImage || null} alt="" />
+                    <img className='object-cover' src={userData.coverImage || null} alt="" />
                     <IoCameraOutline className='w-[25px] h-[25px] absolute top-[20px] right-[20px] text-gray-800' />
                 </div>
                 <div className='w-[70px] h-[70px] rounded-full overflow-hidden flex items-center justify-center absolute top-[70px] left-[35px] cursor-pointer' onClick={() => setEdit(true)}>
-                    <img className='h-full' src={ userData.profileImage || dp} alt="" />
+                    <img className='h-full object-cover' src={ userData.profileImage || dp} alt="" />
                 </div>
                 <div className='w-[20px] h-[20px] absolute top-[110px] left-[88px] bg-[#0A66C2] flex items-center justify-center rounded-full'>
                     <IoMdAdd onClick={() => setEdit(true)} className='text-white' />
@@ -95,7 +95,7 @@ function Home() {
                 </div>
                 <div className='flex justify-start items-center gap-[15px]'>
                     <div className='w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer'>
-                        <img className='h-full' src={ userData.profileImage || dp} alt="" />
+                        <img className='h-full object-cover' src={ userData.profileImage || dp} alt="" />
                     </div>
                     <div className='text-[22px] font-semibold text-gray-700'>
                         {`${userData.firstName} ${userData.lastName}`}
@@ -124,7 +124,7 @@ function Home() {
             <div className='w-full lg:w-[50%] min-h-[200px] bg-[#F4F2EE] shadolw-lg flex flex-col gap-[20px]'>
                 <div className='w-full gap-[15px] h-[80px] bg-white shadow-lg rounded-lg  flex items-center justify-center px-[15px]'>
                     <div className='w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer'>
-                        <img className='h-full' src={ userData.profileImage || dp} alt="" />
+                        <img className='h-full object-cover' src={ userData.profileImage || dp} alt="" />
                     </div>
                     <button className='w-[80%] h-[60%] rounded-full border-2 border-gray-400 flex items-center justify-start px-[20px] hover:bg-gray-100 text-gray-700' onClick={() => setUploadPost(true)}>start a post</button>
                 </div>

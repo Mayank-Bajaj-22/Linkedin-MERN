@@ -10,6 +10,7 @@ import { userDataContext } from '../context/UserContext';
 import { BiSolidLike } from "react-icons/bi";
 import { IoSendOutline  } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
+import socket from "../socket"
 
 function Post({ author, id, like, comment, description, image, createdAt }) {
 
@@ -56,6 +57,25 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
     }
 
     useEffect(() => {
+        socket.on("likeUpdated", ({postId, likes}) => {
+            if (postId == id) {
+                setLikes(likes)
+            }
+        })
+
+        socket.on("commentAdded", ({postId, comm}) => {
+            if (postId == id) {
+                setComments(comm)
+            }
+        })
+
+        return () => {
+            socket.off("likeUpdated")
+            socket.off("commentAdded")
+        }
+    }, [id])
+
+    useEffect(() => {
         getPost()
     }, [likes, setLikes, comments])
 
@@ -64,7 +84,7 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
             <div className='flex justify-between items-start'>
                 <div className='flex justify-center items-start gap-[15px]'>
                     <div className='w-[70px] h-[70px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer'>
-                        <img className='h-full' src={ author.profileImage || dp} alt="" />
+                        <img className='h-full object-cover' src={ author.profileImage || dp} alt="" />
                     </div>
                     <div>
                         <div className='text-[22px] font-semibold'>{`${ author.firstName } ${ author.lastName }`}</div>

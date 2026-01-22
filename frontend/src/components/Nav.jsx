@@ -88,8 +88,8 @@ function Nav() {
                         Notifications
                     </div>
                 </div>
-                <div className='w-[40px] h-[40px] rounded-full cursor-pointer' onClick={(prev) => setShow(prev => !prev)}>
-                    <img className='rounded-full' src={userData.profileImage || dp} alt="" />
+                <div className='w-[40px] h-[40px] rounded-full bg-red-200 flex cursor-pointer' onClick={(prev) => setShow(prev => !prev)}>
+                    <img className='rounded-full object-cover' src={userData.profileImage || dp} alt="" />
                 </div>
             </div>
         </div>
