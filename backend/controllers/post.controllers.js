@@ -30,6 +30,8 @@ export const getPost = async (req, res) => {
     try {
         const post = await Post.find().populate("author", "firstName lastName profileImage headline")
         .sort({ createdAt: -1 })
+        .populate("comment.user", "firstName lastName profileImage headline")
+        .sort({ createdAt: -1 })
         return res.status(201).json(post)
     } catch (error) {
         return res.status(500).json({ message: "getPost error"})
@@ -47,7 +49,7 @@ export const like = async (req, res) => {
         }
 
         if (post.like.includes(userId)) {
-            post.like.filter((id) => id != userId)
+            post.like = post.like.filter((id) => id != userId)
         } else {
             post.like.push(userId)
         }

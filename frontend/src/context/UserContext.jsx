@@ -41,7 +41,8 @@ function UserContext({children}) {
         edit, 
         setEdit,
         postData, 
-        setPostData
+        setPostData,
+        getPost
     }
 
     return (

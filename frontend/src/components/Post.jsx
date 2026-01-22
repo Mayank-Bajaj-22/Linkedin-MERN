@@ -1,12 +1,50 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import dp from "../assets/dp.png"
 import moment from 'moment';
 import { BiLike } from "react-icons/bi";
 import { FaRegCommentDots } from "react-icons/fa6";
+import axios from 'axios';
+import { useContext } from 'react';
+import { authDataContext } from '../context/AuthContext';
+import { userDataContext } from '../context/UserContext';
+import { BiSolidLike } from "react-icons/bi";
+import { IoSendOutline  } from "react-icons/io5";
 
 function Post({ author, id, like, comment, description, image, createdAt }) {
 
     let [more, setMore] = useState(false)
+
+    let { serverUrl } = useContext(authDataContext)
+    let [likes, setLikes] = useState(like || [])
+
+    let { userData, setUserData, getPost } = useContext(userDataContext)
+    let [commentsContent, setCommentsContent] = useState("")
+    let [comments, setComments] = useState(comment || [])
+    let [showComment, setShowComment] = useState(false)
+
+    const handleLike = async () => {
+        try {
+            let result = await axios.get(serverUrl + `/api/post/like/${id}`, { withCredentials: true });
+            setLikes(result.data.like)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleComment = async (e) => {
+        e.preventDefault()
+        try {
+            let result = await axios.post(serverUrl + `/api/post/comment/${id}`, { content: commentsContent }, { withCredentials: true });
+            setComments(result.data.comment)
+            setCommentsContent("")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getPost()
+    }, [likes, setLikes, comments])
 
     return (
         <div className='w-full flex flex-col min-h-[200px] gap-[20px] bg-white rounded-lg shadow-lg p-[20px]'>
@@ -39,23 +77,54 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
             <div>
                 <div className='w-full flex items-center justify-between p-[20px] border-b-2 border-gray-500'>
                     <div className='flex items-center justify-center gap-[5px] text-[18px]'>
-                        <BiLike className='text-[#0A66C2] w-[20px] h-[20px]' /><span>{ like.length }</span>
+                        <BiLike className='text-[#0A66C2] w-[20px] h-[20px]' /><span>{ likes.length }</span>
                     </div>
-                    <div className='flex items-center justify-center gap-[5px] text-[17px]'>
-                        <span className='text-[#0A66C2]'>{ comment.length }</span>
-                        <span>Comments</span>
+                    <div className='flex items-center justify-center gap-[5px] text-[17px] cursor-pointer' onClick={() => setShowComment(prev => !prev)}>
+                        <span>{ comment.length }</span>
+                        <span className='text-[#0A66C2]'>Comments</span>
                     </div>
                 </div>
-                <div className='flex items-center justify-between w-full px-[20px] pt-[20px]'>
-                    <div className='flex justify-center items-center gap-[5px]'>
+                <div className='flex items-center gap-[20px] w-full px-[20px] pt-[20px]'>
+                    { !likes.includes(userData._id) && 
+                    <div className='flex justify-center items-center gap-[5px] cursor-pointer' onClick={handleLike}>
                         <BiLike className='w-[20px] h-[20px]' />
                         <span>Like</span>
-                    </div>
-                    <div className='flex justify-center items-center gap-[8px]'>
+                    </div> }
+
+                    { likes.includes(userData._id) && 
+                    <div className='flex justify-center items-center gap-[5px] cursor-pointer' onClick={handleLike}>
+                        <BiSolidLike className='w-[20px] h-[20px] text-[#0A66C2]' />
+                        <span className='text-[#0A66C2] font-semibold'>Liked</span>
+                    </div> }
+                    
+                    <div className='flex justify-center items-center gap-[8px] cursor-pointer' onClick={() => setShowComment(prev => !prev)}>
                         <FaRegCommentDots />
-                        <span>Comments</span>
+                        <span>Comment</span>
                     </div>
+                    
                 </div>
+                { showComment && <div>
+                    <form className='p-[10px] my-[25px] rounded-full border-gray-300 border-2 flex items-center justify-between bg-gray-100' onSubmit={handleComment}>
+                        <input className='outline-none border-none px-[10px]' type="text" placeholder='leave a comment...' onChange={(e) => setCommentsContent(e.target.value)} value={commentsContent} />
+                        <button className='text-[#0A66C2] pr-[10px]'><IoSendOutline className=' w-[22px] h-[22px]'  /></button>
+                    </form>
+                    <div className='flex flex-col gap-[20px]'>
+                        { comments.map((com) => (
+                            <div className='flex flex-col gap-[10px] border-b-2 border-b-gray-300 pb-[10px]'>
+                                <div className='w-full flex items-center justify-start gap-[10px]'>
+                                    <div className='w-[40px] h-[40px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer'>
+                                        <img className='h-full' src={ com.user.profileImage || dp} alt="" />
+                                    </div>
+                                    <div>
+                                        <div className='text-[22px] font-semibold'>{`${ com.user.firstName } ${ com.user.lastName }`}</div>
+                                        <div>{moment(com.createdAt).fromNow()}</div>
+                                    </div>
+                                </div>
+                                <div className='pl-[50px]'>{com.content}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div> }
             </div>
         </div>
     )
