@@ -9,6 +9,7 @@ import { authDataContext } from '../context/AuthContext';
 import { userDataContext } from '../context/UserContext';
 import { BiSolidLike } from "react-icons/bi";
 import { IoSendOutline  } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
 
 function Post({ author, id, like, comment, description, image, createdAt }) {
 
@@ -37,6 +38,18 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
             let result = await axios.post(serverUrl + `/api/post/comment/${id}`, { content: commentsContent }, { withCredentials: true });
             setComments(result.data.comment)
             setCommentsContent("")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleDeleteComment = async (commentId) => {
+        try {
+            const result = await axios.delete(
+                `${serverUrl}/api/post/comment/${id}/${commentId}`,
+                { withCredentials: true }
+            )
+            setComments(result.data.comment)
         } catch (error) {
             console.log(error)
         }
@@ -116,9 +129,17 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
                                         <img className='h-full' src={ com.user.profileImage || dp} alt="" />
                                     </div>
                                     <div>
-                                        <div className='text-[22px] font-semibold'>{`${ com.user.firstName } ${ com.user.lastName }`}</div>
-                                        <div>{moment(com.createdAt).fromNow()}</div>
+                                        <div className='text-[20px] font-semibold'>{`${ com.user.firstName } ${ com.user.lastName }`}</div>
+                                        <div className='text-gray-600 text-[14px]'>{moment(com.createdAt).fromNow()}</div>
                                     </div>
+                                    {com.user._id === userData._id && (
+                                        <button
+                                        onClick={() => handleDeleteComment(com._id)}
+                                        className='text-red-500 text-[22px] hover:underline pl-[30px]'
+                                        >
+                                        <MdDelete />
+                                        </button>
+                                    )}
                                 </div>
                                 <div className='pl-[50px]'>{com.content}</div>
                             </div>

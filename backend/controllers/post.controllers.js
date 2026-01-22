@@ -81,3 +81,36 @@ export const comment = async (req, res) => {
         return res.status(500).json({ message: `comment error ${error}` })
     }
 }
+
+export const deleteComment = async (req, res) => {
+    try {
+        const { postId, commentId } = req.params
+        const userId = req.userId
+
+        const post = await Post.findOne({
+            _id: postId,
+            "comment._id": commentId,
+            "comment.user": userId   // 🔒 ownership check
+        })
+
+        if (!post) {
+            return res.status(403).json({ message: "Unauthorized or comment not found" })
+        }
+
+        await Post.findByIdAndUpdate(
+            postId,
+            {
+                $pull: { comment: { _id: commentId } }
+            },
+            { new: true }
+        )
+
+        const updatedPost = await Post.findById(postId)
+            .populate("comment.user", "firstName lastName profileImage headline")
+
+        return res.status(200).json(updatedPost)
+
+    } catch (error) {
+        return res.status(500).json({ message: `delete comment error ${error}` })
+    }
+}
