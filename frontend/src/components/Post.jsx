@@ -130,7 +130,7 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
                                     </div>
                                     <div>
                                         <div className='text-[20px] font-semibold'>{`${ com.user.firstName } ${ com.user.lastName }`}</div>
-                                        <div className='text-gray-600 text-[14px]'>{moment(com.createdAt).fromNow()}</div>
+                                        {/* <div className='text-gray-600 text-[14px]'>{moment(com.createdAt).fromNow()}</div> */}
                                     </div>
                                     {com.user._id === userData._id && (
                                         <button
