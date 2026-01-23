@@ -41,6 +41,22 @@ export const updateProfile = async (req, res) => {
         return res.status(200).json(user)
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ message: "update profile error" })
+        return res.status(500).json({ message: `update profile error ${error}` })
+    }
+}
+
+export const getProfile = async (req, res) => {
+    try {
+        let { userName } = req.params;
+        let user = await User.findOne({ userName }).select("-password")
+
+        if (!user) {
+            return res.status(400).json({ message: "userName does not exist" })
+        }
+
+        return res.status(200).json(user)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: "getProfile error" })
     }
 }

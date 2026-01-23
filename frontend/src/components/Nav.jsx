@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom"
 function Nav() {
 
     let [activeSearch, setActiveSearch] = useState(false);
-    let { userData, setUserData } = useContext(userDataContext);
+    let { userData, setUserData, handleGetProfile } = useContext(userDataContext);
     let [show, setShow] = useState(false);
     let { serverUrl } = useContext(authDataContext);
     const navigate = useNavigate();
@@ -59,7 +59,9 @@ function Nav() {
                     <div className='text-[19px] font-semibold text-gray-700'>
                         {` ${userData.firstName} ${userData.lastName}`}
                     </div>
-                    <button className='w-[100%] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer' onClick={() => navigate("/profile")}>View Profile</button>
+                    <button className='w-[100%] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer' onClick={() => handleGetProfile(userData.userName)}>
+                        View Profile
+                    </button>
                     <div className='w-full h-[1px] bg-gray-500'></div>
                     <div className='flex items-center w-full px-[10px] justify-start text-gray-600 gap-[12px]' onClick={() => navigate("/network")} >
                         <FaUserGroup className='w-[23px] h-[23px] text-gray-600' />

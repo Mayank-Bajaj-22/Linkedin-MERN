@@ -9,34 +9,38 @@ import EditProfile from "../components/EditProfile";
 import { authDataContext } from "../context/AuthContext";
 import axios from "axios";
 import Post from "../components/Post";
+import ConnectionButton from "../components/ConnectionButton";
 
 function Profile() {
 
-    let { userData, setUserData, edit, setEdit, postData, setPostData } = useContext(userDataContext);
+    let { userData, setUserData, edit, setEdit, postData, setPostData, profileData, setProfileData } = useContext(userDataContext);
 
     let { serverUrl } = useContext(authDataContext);
-    let [userConnection, setUserConnection] = useState([]);
+    // let [userConnection, setUserConnection] = useState([]);
     let [profilePost, setProfilePost] = useState([])
 
-    const handleGetUserConnection = async () => {
-        try {
-            let result = await axios.get(`${serverUrl}/api/connection`, { withCredentials: true })
-            console.log(result)
-            setUserConnection(result.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const handleGetUserConnection = async () => {
+    //     try {
+    //         let result = await axios.get(`${serverUrl}/api/connection`, { withCredentials: true })
+    //         console.log(result)
+    //         setUserConnection(result.data)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     handleGetUserConnection()
+    // }, [])
 
     useEffect(() => {
-        handleGetUserConnection()
-    }, [])
-
-    useEffect(() => {
-        setProfilePost(
-            postData.filter(post => post.author._id === userData._id)
+        if (profileData?._id) {
+            setProfilePost(
+            postData.filter(post => post.author._id === profileData._id)
         );
-    }, [postData, userData._id]);
+        }
+    }, [postData, profileData]);
+
 
     return (
         <>
@@ -51,7 +55,7 @@ function Profile() {
                 >
                     <img
                     className="object-cover object-center w-full h-full"
-                    src={userData.coverImage || null}
+                    src={profileData.coverImage || null}
                     alt=""
                     />
                     <IoCameraOutline className="w-[25px] h-[25px] absolute top-[20px] right-[20px] text-white" />
@@ -62,7 +66,7 @@ function Profile() {
                 >
                     <img
                     className="h-full object-cover"
-                    src={userData.profileImage || dp}
+                    src={profileData.profileImage || dp}
                     alt=""
                     />
                 </div>
@@ -71,20 +75,29 @@ function Profile() {
                 </div>
                 <div className="mt-[42px] pl-[25px]">
                     <div className="text-[22px] font-semibold text-gray-700">
-                    {`${userData.firstName} ${userData.lastName}`}
+                    {`${profileData.firstName} ${profileData.lastName}`}
                     </div>
                     <div className="text-[16px] text-gray-600">
-                    {userData.headline || ""}
+                    {profileData.headline || ""}
                     </div>
-                    <div className="text-[16px] text-gray-600">{userData.location}</div>
-                    <div className="text-[16px] text-gray-600">{`${userData.connection.length} connections`}</div>
+                    <div className="text-[16px] text-gray-600">{profileData.location}</div>
+                    <div className="text-[16px] text-gray-600">{`${profileData.connection.length} connections`}</div>
                 </div>
-                <button
+                {
+                    profileData._id == userData._id &&
+                    <button
                     className="min-w-[150px] ml-[20px] mt-[20px] mb-[10px] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer flex items-center justify-center gap-[10px]"
                     onClick={() => setEdit(true)}
-                >
-                    Edit Profile <HiPencil />
-                </button>
+                    >
+                        Edit Profile <HiPencil />
+                    </button>
+                }
+                {
+                    profileData._id !== userData._id && 
+                    <div className="mt-[15px] ml-[20px]">
+                        <ConnectionButton userId={profileData._id} />
+                    </div>
+                }
                 </div>
                 <div className="w-full h-[100px] flex items-center p-[20px] text-[22px] text-gray-600 font-semibold bg-white shadow-lg rounded-lg">
                     {`Post (${profilePost.length})`}
@@ -95,33 +108,37 @@ function Profile() {
                     ))
                 }
                 {
-                    userData.skills.length > 0 && 
+                    profileData.skills.length > 0 && 
                     <div className="w-full min-h-[100px] flex justify-center p-[30px] bg-white shadow-lg rounded-lg font-semibold flex-col gap-[10px]">
                         <div className=" text-[22px] text-gray-600">
                             Skills
                         </div>
                         <div className="flex items-center justify-start gap-[20px] flex-wrap text-gray-600">
                             {
-                                userData.skills.map((skill) => (
+                                profileData.skills.map((skill) => (
                                     <div>{skill}</div>
                                 ))
                             }
-                            <button className="min-w-[150px] ml-[20px] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer flex items-center justify-center gap-[10px]" onClick={() => setEdit(true)}>
-                                Add Skills
-                            </button>
+                            {
+                                profileData._id == userData._id &&
+                                    <button className="min-w-[150px] ml-[20px] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer flex items-center justify-center gap-[10px]" onClick={() => setEdit(true)}>
+                                    Add Skills
+                                </button>
+                            }
+                            
                         </div>
                     </div>
                 }
                 
                 {
-                    userData.education.length > 0 && 
+                    profileData.education.length > 0 && 
                     <div className="w-full min-h-[100px] flex justify-center p-[30px] bg-white shadow-lg rounded-lg font-semibold flex-col gap-[10px]">
                         <div className=" text-[22px] text-gray-600">
                             Education
                         </div>
                         <div className="flex items-start justify-start gap-[20px] flex-col text-gray-600">
                             {
-                                userData.education.map((edu) => (
+                                profileData.education.map((edu) => (
                                     <>
                                         <div>College: {edu.college}</div>
                                         <div>Degree: {edu.degree}</div>
@@ -129,22 +146,26 @@ function Profile() {
                                     </>
                                 ))
                             }
-                            <button className="min-w-[150px] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer flex items-center justify-center gap-[10px]" onClick={() => setEdit(true)}>
-                                Add Education
-                            </button>
+                            {
+                                profileData._id == userData._id && 
+                                <button className="min-w-[150px] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer flex items-center justify-center gap-[10px]" onClick={() => setEdit(true)}>
+                                    Add Education
+                                </button>
+                            }
+                            
                         </div>
                     </div>
                 }
 
                 {
-                    userData.experience.length > 0 && 
+                    profileData.experience.length > 0 && 
                     <div className="w-full min-h-[100px] flex justify-center p-[30px] bg-white shadow-lg rounded-lg font-semibold flex-col gap-[10px]">
                         <div className=" text-[22px] text-gray-600">
                             Experience
                         </div>
                         <div className="flex items-start justify-start gap-[20px] flex-col text-gray-600">
                             {
-                                userData.experience.map((exp) => (
+                                profileData.experience.map((exp) => (
                                     <>
                                         <div>Title: {exp.title}</div>
                                         <div>Comapany: {exp.company}</div>
@@ -152,9 +173,13 @@ function Profile() {
                                     </>
                                 ))
                             }
-                            <button className="min-w-[150px] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer flex items-center justify-center gap-[10px]" onClick={() => setEdit(true)}>
-                                Add Experience
-                            </button>
+                            {
+                                profileData._id == userData._id && 
+                                <button className="min-w-[150px] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer flex items-center justify-center gap-[10px]" onClick={() => setEdit(true)}>
+                                    Add Experience
+                                </button>
+                            }
+                            
                         </div>
                     </div>
                 }

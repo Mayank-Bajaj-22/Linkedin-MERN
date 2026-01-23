@@ -20,7 +20,7 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
     let { serverUrl } = useContext(authDataContext)
     let [likes, setLikes] = useState(like || [])
 
-    let { userData, setUserData, getPost } = useContext(userDataContext)
+    let { userData, setUserData, getPost, handleGetProfile } = useContext(userDataContext)
     let [commentsContent, setCommentsContent] = useState("")
     let [comments, setComments] = useState(comment || [])
     let [showComment, setShowComment] = useState(false)
@@ -83,7 +83,7 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
     return (
         <div className='w-full flex flex-col min-h-[200px] gap-[20px] bg-white rounded-lg shadow-lg p-[20px]'>
             <div className='flex justify-between items-start'>
-                <div className='flex justify-center items-start gap-[15px]'>
+                <div className='flex justify-center items-start gap-[15px]' onClick={() => handleGetProfile(author.userName)}>
                     <div className='w-[70px] h-[70px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer'>
                         <img className='h-full object-cover' src={ author.profileImage || dp} alt="" />
                     </div>
