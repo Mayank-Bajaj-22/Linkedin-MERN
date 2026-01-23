@@ -31,7 +31,7 @@ function UserContext({children}) {
     }
 
     useEffect(() => {
-        getCurrentUser(),
+        getCurrentUser()
         getPost()
     }, [])
 
