@@ -9,7 +9,7 @@ export const sendConnection = async (req, res) => {
 
         let user = await User.findById(sender);
 
-        if (user == id) {
+        if (sender == id) {
             return res.status(400).json({ message: "you can not send connection request yourself" })
         }
 
@@ -121,7 +121,7 @@ export const getConnectionStatus = async (req, res) => {
         const currentUserId = req.userId;
 
         let currentUser = await User.findById(currentUserId);
-        if (currentUserId.connection.includes(targetUserId)) {
+        if (currentUser.connection.includes(targetUserId)) {
             return res.json({ status: "disconnect" })
         }
 
@@ -141,7 +141,7 @@ export const getConnectionStatus = async (req, res) => {
             }
         }
 
-        return res.json({ status: "Connect" })
+        return res.json({ status: "connect" })
     } catch (error) {
         return res.status(500).json({ message: `getConnectionStatus ${error}` })
     }

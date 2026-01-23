@@ -11,6 +11,7 @@ import { BiSolidLike } from "react-icons/bi";
 import { IoSendOutline  } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import socket from "../socket"
+import ConnectionButton from './ConnectionButton';
 
 function Post({ author, id, like, comment, description, image, createdAt }) {
 
@@ -93,7 +94,9 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
                     </div>
                 </div>
                 <div>
-                    {/* button */}
+                    {
+                        userData._id != author._id && <ConnectionButton userId={author._id} />
+                    }
                 </div>
             </div>
             <div className={`w-full ${ !more ? "max-h-[100px] overflow-hidden" : "" } pl-[50px]`}>

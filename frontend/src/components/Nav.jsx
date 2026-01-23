@@ -34,7 +34,7 @@ function Nav() {
             {/* left */}
             <div className='flex justify-center items-center gap-[10px]'>
                 <div onClick={() => {setActiveSearch(false)}}>
-                    <img src={logo2} className='w-[45px]' alt="" />
+                    <img src={logo2} className='w-[45px]' alt="" onClick={() => navigate("/")} />
                 </div>
                 { !activeSearch && <div>
                     <IoSearchSharp className='w-[23px] h-[23px] text-gray-600 md:hidden' onClick={() => setActiveSearch(true)} />
@@ -61,7 +61,7 @@ function Nav() {
                     </div>
                     <button className='w-[100%] h-[40px] rounded-full border-2 border-[#4C8ECE] text-[#4C8ECE] cursor-pointer'>View Profile</button>
                     <div className='w-full h-[1px] bg-gray-500'></div>
-                    <div className='flex items-center w-full px-[10px] justify-start text-gray-600 gap-[12px]'>
+                    <div className='flex items-center w-full px-[10px] justify-start text-gray-600 gap-[12px]' onClick={() => navigate("/network")} >
                         <FaUserGroup className='w-[23px] h-[23px] text-gray-600' />
                         <div className='text-md'>
                             My Network
@@ -70,13 +70,13 @@ function Nav() {
                     <button className='w-[100%] h-[40px] rounded-full border-2 border-red-500 text-red-500 cursor-pointer' onClick = {handleSignOut}>Sign Out</button>
                 </div> }
 
-                <div className='lg:flex flex-col items-center justify-center text-gray-600 hidden cursor-pointer'>
+                <div className='lg:flex flex-col items-center justify-center text-gray-600 hidden cursor-pointer' onClick={() => navigate("/")}>
                     <MdHome className='w-[23px] h-[23px] text-gray-600' />
                     <div className='text-md'>
                         Home
                     </div>
                 </div>
-                <div className='lg:flex flex-col items-center justify-center gap-[2px] text-gray-600 hidden cursor-pointer'>
+                <div className='lg:flex flex-col items-center justify-center gap-[2px] text-gray-600 hidden cursor-pointer' onClick={() => navigate("/network")}>
                     <FaUserGroup className='w-[21px] h-[21px] text-gray-600' />
                     <div className='text-md'>
                         My Network

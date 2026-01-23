@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import { userDataContext } from './context/UserContext'
+import Network from './pages/Network'
 
 function App() {
   let { userData } = useContext(userDataContext)
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={ userData ? <Home /> : <Navigate to="/login" /> } />
         <Route path="/login" element={ userData ? <Navigate to="/" />  : <Login /> } />
         <Route path="/signup" element={ userData ? <Navigate to="/" /> : <SignUp /> } />
+        <Route path="/network" element={ userData ? <Network /> : <Navigate to="/login" /> } />
       </Routes>
     </div>
   )
