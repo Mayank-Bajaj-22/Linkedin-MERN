@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Nav from '../components/Nav'
 import dp from "../assets/dp.png"
 import { IoMdAdd } from "react-icons/io";
@@ -14,7 +14,7 @@ import Post from '../components/Post';
 
 function Home() {
 
-    let { userData, setUserData, edit, setEdit, postData, setPostData } = useContext(userDataContext);
+    let { userData, setUserData, edit, setEdit, postData, setPostData, handleGetProfile } = useContext(userDataContext);
     let { serverUrl } = useContext(authDataContext)
 
     let [frontendImage, setFrontendImage] = useState("")
@@ -22,6 +22,7 @@ function Home() {
     let [description, setDescription] = useState("")
     let [uploadPost, setUploadPost] = useState(false)
     let [posting, setPosting] = useState(false)
+    let [suggestedUser, setSuggestedUser] = useState([])
 
     let image = useRef()
 
@@ -54,6 +55,20 @@ function Home() {
             console.log(error)
         }
     }
+
+    const handleSuggestedUsers = async () => {
+        try {
+            let result = await axios.get(serverUrl + "/api/user/suggestedusers", { withCredentials: true });
+            console.log(result.data)
+            setSuggestedUser(result.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        handleSuggestedUsers()
+    }, [])
 
     return (
         <div className='w-full min-h-[100vh] bg-[#F4F2EE] lg:pt-[100px] pt-[90px] flex items-center lg:items-start justify-center gap-[20px] px-[20px] flex-col lg:flex-row relative pb-[20px]'>
@@ -134,8 +149,36 @@ function Home() {
             </div>
 
             {/* right */}
-            <div className='w-full lg:w-[25%] min-h-[200px] bg-white rounded-lg shadow-lg'>
-
+            <div className='w-full lg:w-[25%] min-h-[200px] bg-white rounded-lg shadow-lg hidden lg:flex flex-col'>
+                <h1 className='text-[20px] text-gray-600  p-[20px] font-semibold'>Suggested Users</h1>
+                {
+                    suggestedUser.length > 0 && 
+                    <div className='flex flex-col gap-[10px]'>
+                        {
+                            suggestedUser.map((su) => (
+                                <div className='flex gap-[20px] items-center rounded p-[20px] cursor-pointer hover:bg-gray-100' onClick={() => handleGetProfile(su.userName)}>
+                                    <div className='w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer'>
+                                        <img className='h-full object-cover' src={ su.profileImage || dp } alt="" />
+                                    </div>
+                                    <div>
+                                        <div className='text-[20px] font-semibold text-gray-700'>
+                                            {`${su.firstName} ${su.lastName}`}
+                                        </div>
+                                        <div className='text-[14px] font-semibold text-gray-400'>
+                                            {`${su.headline}`}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                }
+                {
+                    suggestedUser.length == 0 && 
+                    <div>
+                        <h1>No Suggested Users</h1>
+                    </div>
+                }
             </div>
         </div>
     )

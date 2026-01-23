@@ -27,7 +27,7 @@ function UserContext({children}) {
     const getPost = async () => {
         try {
             let result = await axios.get(serverUrl + "/api/post/getpost", { withCredentials: true });
-            console.log(result)
+            // console.log(result)
             setPostData(result.data)
         } catch (error) {
             console.log(error)
