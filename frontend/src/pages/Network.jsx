@@ -45,12 +45,12 @@ function Network() {
     return (
         <div className='w-screen h-[100vh] bg-[#F4F2EE] pt-[90px] px-[20px] flex flex-col gap-[20px] items-center'>
             <Nav />
-            <div className='w-full h-[80px] bg-white shadow-lg rounded-lg flex items-center p-[10px] text-[22px] text-gray-600'>
+            <div className='w-full h-[80px] bg-white shadow-lg rounded-lg flex items-center p-[20px] text-[22px] text-gray-600'>
                 Invitations: {connections.length}
             </div>
 
             {
-                connections.length > 0 && <div className='w-[700px] bg-white shadow-lg w-full rounded-lg flex flex-col gap-[20px] min-h-[100px]'>
+                connections.length > 0 && <div className='max-w-[900px] bg-white shadow-lg w-full rounded-lg flex flex-col gap-[20px] min-h-[100px]'>
                     { connections.map((connection, index) => (
                         <div className='w-full min-h-[100px] p-[20px] flex items-center justify-between'>
                             <div className='flex items-center justify-center gap-[10px]'>

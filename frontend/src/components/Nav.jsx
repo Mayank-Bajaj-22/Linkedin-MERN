@@ -125,7 +125,7 @@ function Nav() {
                         My Network
                     </div>
                 </div>
-                <div className='flex flex-col items-center justify-center text-gray-600 cursor-pointer'>
+                <div className='flex flex-col items-center justify-center text-gray-600 cursor-pointer' onClick={() => navigate("/notification")}>
                     <IoIosNotifications className='md:w-[23px] md:h-[23px] w-[26px] h-[26px] text-gray-600' />
                     <div className='text-md hidden md:block'>
                         Notifications
