@@ -19,7 +19,8 @@ let server = http.createServer(app);
 export const io = new Server(server, {
     cors: ({
         origin: "https://linkedin-frontend-5h6g.onrender.com",
-        credentials: true
+        credentials: true,
+        methods: ["GET", "POST"]
     })
 })
 
