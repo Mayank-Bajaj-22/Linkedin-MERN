@@ -22,12 +22,12 @@ export const signUp = async (req, res) => {
         }) 
 
         let token = await genToken(user._id);
-        res.cookie("token", token), {
+        res.cookie("token", token, {
             httpOnly: true,
             maxAge: 7*24*60*60*1000,
-            sameSite: "strict",
+            sameSite: "none",
             secure: process.env.NODE_ENVIORNMENT === "production"
-        };
+        });
         res.status(201).json({ message: "User created", user });
 
     } catch (error) {
@@ -50,12 +50,12 @@ export const login = async (req, res) => {
         
 
         let token = await genToken(user._id);
-        res.cookie("token", token), {
+        res.cookie("token", token, {
             httpOnly: true,
             maxAge: 7*24*60*60*1000,
-            sameSite: "strict",
+            sameSite: "none",
             secure: process.env.NODE_ENVIORNMENT === "production"
-        };
+        });
         res.status(201).json({ user });
 
     } catch (error) {
@@ -66,7 +66,10 @@ export const login = async (req, res) => {
 
 export const logOut = async (req, res) => {
     try {
-        res.clearCookie("token");
+        res.clearCookie("token", {
+            sameSite: "none",
+            secure: true
+        });
         return res.status(200).json({ message: "logout successfully"})
     } catch (error) {
         console.log(error)

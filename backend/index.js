@@ -16,6 +16,14 @@ dotenv.config();
 const app = express();
 let server = http.createServer(app);
 
+app.use(cors({
+    origin: "https://linkedin-frontend-5h6g.onrender.com",
+    credentials: true
+}))
+
+app.use(express.json())
+app.use(cookieParser())
+
 export const io = new Server(server, {
     cors: ({
         origin: "https://linkedin-frontend-5h6g.onrender.com",
@@ -23,14 +31,6 @@ export const io = new Server(server, {
         methods: ["GET", "POST"]
     })
 })
-
-app.use(express.json())
-app.use(cookieParser())
-
-app.use(cors({
-    origin: "https://linkedin-frontend-5h6g.onrender.com",
-    credentials: true
-}))
 
 const port = process.env.PORT || 3000;
 app.use("/api/auth", authRouter)
