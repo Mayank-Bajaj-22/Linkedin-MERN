@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:8000", {
+const socket = io("https://linkedin-backend-i3di.onrender.com", {
     withCredentials: true,
     transports: ["websocket", "polling"]
 });

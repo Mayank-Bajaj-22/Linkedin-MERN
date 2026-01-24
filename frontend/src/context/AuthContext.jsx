@@ -4,7 +4,7 @@ export const authDataContext = createContext()
 
 function AuthContext({children}) {
 
-    const serverUrl = "http://localhost:8000"
+    const serverUrl = "https://linkedin-backend-i3di.onrender.com"
     let value = {
         serverUrl
     }
