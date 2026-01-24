@@ -54,12 +54,14 @@ export const like = async (req, res) => {
             post.like = post.like.filter((id) => id != userId)
         } else {
             post.like.push(userId)
-            let notification = await Notification.create({
-                receiver: post.author,
-                type: "like",
-                relatedUser: userId,
-                relatedPost: postId
-            })
+            if (post.author != userId) {
+                let notification = await Notification.create({
+                    receiver: post.author,
+                    type: "like",
+                    relatedUser: userId,
+                    relatedPost: postId
+                })
+            }
         }
 
         await post.save()
@@ -85,13 +87,14 @@ export const comment = async (req, res) => {
         }, { new: true })
         .populate("comment.user", "firstName lastName profileImage headline")
 
-        let notification = await Notification.create({
-            receiver: post.author,
-            type: "comment",
-            relatedUser: userId,
-            relatedPost: postId
-        })
-
+        if (post.author != userId) {
+            let notification = await Notification.create({
+                receiver: post.author,
+                type: "comment",
+                relatedUser: userId,
+                relatedPost: postId
+            })
+        }
         io.emit("commentAdded", { postId, comm: post.comment })
 
         return res.status(200).json(post)

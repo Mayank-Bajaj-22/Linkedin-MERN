@@ -59,7 +59,7 @@ function Notification() {
                     Notifications: {notificationData.length}
                 </div>
                 {
-                    notificationData > 0 &&
+                    notificationData.length > 0 &&
                     <button className='min-w-[100px] h-[40px] rounded-full border-2 border-red-500 text-red-500 cursor-pointer text-[18px]' onClick={handleClearAllNotification}>
                         clear all
                     </button>
@@ -67,7 +67,7 @@ function Notification() {
             </div>
 
             {
-                notificationData.length > 0 && <div className='max-w-[900px] bg-white shadow-lg w-full rounded-lg flex flex-col min-h-[100px]'>
+                notificationData.length > 0 && <div className='max-w-[900px] bg-white shadow-lg w-full rounded-lg flex flex-col h-[80vh] mb-[20px] overflow-auto'>
                     { notificationData.map((noti, index) => (
                         <div key={index} className="relative w-full md:px-[20px] md:py-[10px] p-[10px] flex flex-col border-b-2 border-gray-200">
                             <div className='w-full min-h-[90px] flex items-center justify-between'>

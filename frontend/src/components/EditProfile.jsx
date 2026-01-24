@@ -148,7 +148,7 @@ function EditProfile() {
             <input type="file" accept="image/*" hidden ref={coverImage} onChange={handleCoverImage} />
 
             <div className='bg-black opacity-[0.6] w-full h-full absolute'></div>
-            <div className='w-[90%] mt-15 max-w-[500px] h-[600px] bg-white relative z-200 shadow-lg rounded-lg p-[10px] overflow-auto scrollbar'>
+            <div className='w-[90%] md:mt-15 mt-5 max-w-[500px] h-[600px] bg-white relative z-200 shadow-lg rounded-lg p-[10px] overflow-auto scrollbar'>
                 <div className='absolute top-[10px] right-[20px] cursor-pointer' >
                     <RxCross2 onClick={() => setEdit(false)} className='w-[25px] h-[25px] text-gray-800 font-bold cursor-pointer' />
                 </div>

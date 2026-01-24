@@ -104,7 +104,7 @@ function Home() {
             {/* post div */}
             { uploadPost && <div className='w-full h-full bg-black opacity-[0.6] left-0 fixed top-0 z-[100]'></div> }
 
-            { uploadPost && <div className='w-[90%] max-w-[500px] h-[600px] bg-white shadow-lg rounded-lg fixed z-[200] p-[20px] flex items-start justify-start flex-col gap-[20px] mt-[-200px] lg:mt-[0]'>
+            { uploadPost && <div className='w-[90%] top-[230px] md:top-[100px] max-w-[500px] h-[600px] bg-white shadow-lg rounded-lg fixed z-[200] p-[20px] flex items-start justify-start flex-col gap-[20px] mt-[-200px] lg:mt-[0]'>
                 <div className='absolute top-[10px] right-[20px] cursor-pointer' >
                     <RxCross2 className='w-[25px] h-[25px] text-gray-800 font-bold cursor-pointer' onClick={() => setUploadPost(false)} />
                 </div>

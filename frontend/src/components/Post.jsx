@@ -18,11 +18,11 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
     let [more, setMore] = useState(false)
 
     let { serverUrl } = useContext(authDataContext)
-    let [likes, setLikes] = useState(like || [])
+    let [likes, setLikes] = useState([])
 
     let { userData, setUserData, getPost, handleGetProfile } = useContext(userDataContext)
     let [commentsContent, setCommentsContent] = useState("")
-    let [comments, setComments] = useState(comment || [])
+    let [comments, setComments] = useState([])
     let [showComment, setShowComment] = useState(false)
 
     const handleLike = async () => {
@@ -77,8 +77,9 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
     }, [id])
 
     useEffect(() => {
-        getPost()
-    }, [likes, setLikes, comments])
+        setLikes(like)
+        setComments(comment)
+    }, [like, comment])
 
     return (
         <div className='w-full flex flex-col min-h-[200px] gap-[20px] bg-white rounded-lg shadow-lg p-[20px]'>
@@ -116,7 +117,7 @@ function Post({ author, id, like, comment, description, image, createdAt }) {
                         <BiLike className='text-[#0A66C2] w-[20px] h-[20px]' /><span>{ likes.length }</span>
                     </div>
                     <div className='flex items-center justify-center gap-[5px] text-[17px] cursor-pointer' onClick={() => setShowComment(prev => !prev)}>
-                        <span>{ comment.length }</span>
+                        <span>{ comments.length }</span>
                         <span className='text-[#0A66C2]'>Comments</span>
                     </div>
                 </div>

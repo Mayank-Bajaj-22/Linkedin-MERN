@@ -59,7 +59,7 @@ function Nav() {
 
                 {
                     searchData.length > 0 && 
-                    <div className='absolute top-[80px] left-0 shadow-lg rounded lg:left-[200px] min-h-[100px] w-[100%] lg:w-[700px] max-w-[500px] bg-white flex flex-col'>
+                    <div className='absolute top-[80px] left-0 shadow-lg rounded lg:left-[200px] overflow-auto md:h-[500px] h-[400px] scrollbar w-[100%] lg:w-[700px] max-w-[500px] bg-white flex flex-col'>
                     {
                         searchData.map((sea) => (
                             <div className='flex gap-[20px] items-center p-[20px] border-b-2 border-gray-100 cursor-pointer hover:bg-gray-200 rounded' onClick={() => handleGetProfile(sea.userName)}>
@@ -104,7 +104,7 @@ function Nav() {
                         View Profile
                     </button>
                     <div className='w-full h-[1px] bg-gray-500'></div>
-                    <div className='flex items-center w-full px-[10px] justify-start text-gray-600 gap-[12px]' onClick={() => navigate("/network")} >
+                    <div className='flex items-center w-full px-[10px] justify-start text-gray-600 gap-[12px] cursor-pointer hover:text-[#0A66C2]' onClick={() => navigate("/network")} >
                         <FaUserGroup className='w-[23px] h-[23px] text-gray-600' />
                         <div className='text-md'>
                             My Network
